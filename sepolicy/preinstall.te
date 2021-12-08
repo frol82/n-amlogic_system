@@ -1,0 +1,47 @@
+# preinstall seclabel is specified in init.amlogic.rc
+type preinstall, domain;
+type preinstall_exec, exec_type, file_type;
+
+init_daemon_domain(preinstall)
+
+allow preinstall activity_service:service_manager { find add list };
+allow preinstall account_service:service_manager { find add list };
+allow preinstall proc_net:file { read open getattr write };
+allow preinstall ashmem_device:chr_file { execute getattr read open write };
+allow preinstall toolbox_exec:file { getattr execute_no_trans open read execute };
+allow preinstall rootfs:lnk_file  { getattr open read write execute };
+allow preinstall system_file:file { execute_no_trans open read write execute };
+allow preinstall system_file:dir { read open write getattr execute};
+allow preinstall shell_exec:file  { getattr open read write execute execute_no_trans };
+#allow preinstall shell_data_file:dir { create getattr setattr search };
+#allow preinstall shell_data_file:file { open create read write getattr };
+allow preinstall shell:file { getattr };
+allow preinstall zygote_exec:file { read open write execute getattr execute_no_trans };
+allow preinstall system_data_file:dir { open read write add_name create };
+allow preinstall system_data_file:file { open read write create lock };
+allow preinstall system_data_file:lnk_file { unlink read write open };
+allow preinstall dalvikcache_data_file:dir { open read write search getattr add_name remove_name unlink};
+allow preinstall dalvikcache_data_file:file { open read write lock getattr create execute execute_no_trans unlink};
+allow preinstall dalvikcache_data_file:lnk_file { read getattr unlink open write };
+allow preinstall servicemanager:binder { call  transfer};
+allow preinstall servicemanager:dir  { open read write create search };
+allow preinstall servicemanager:file  { open read write create };
+allow preinstall self:process execmem;
+allow preinstall preinstall_tmpfs:file { execute open read write create };
+allow preinstall servicemanager:process { getattr execmem };
+allow servicemanager preinstall:dir search;
+allow servicemanager preinstall:file { open read write create };
+allow servicemanager preinstall:process { getattr execmem };
+allow preinstall user_service:service_manager { find add list };
+allow preinstall package_service:service_manager { find add list };
+allow preinstall system_server:binder { call transfer };
+allow preinstall system_server:unix_stream_socket { read write create getopt setopt };
+allow system_server preinstall:binder { call transfer };
+allow preinstall apk_data_file:dir create_dir_perms;
+allow preinstall apk_data_file:file { create_file_perms link };
+allow preinstall apk_tmp_file:dir create_dir_perms;
+allow preinstall apk_tmp_file:file create_file_perms;
+
+binder_use(preinstall)
+binder_service(preinstall)
+binder_call(preinstall, system_server)

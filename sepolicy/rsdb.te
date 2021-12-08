@@ -1,0 +1,24 @@
+# rsdb seclabel is specified in init.amlogic.rc
+type rsdb, domain;
+type rsdb_exec, exec_type, file_type;
+
+init_daemon_domain(rsdb)
+binder_use(rsdb);
+binder_service(rsdb)
+
+allow rsdb rootfs:lnk_file { getattr };
+allow rsdb self:{ rawip_socket } { create getopt setopt };
+allow rsdb shell_exec:file { getattr read };
+allow rsdb system_file:file { execute_no_trans };
+allow rsdb netd_socket:sock_file { write };
+allow rsdb self:capability { net_admin net_raw net_bind_service setgid setuid };
+allow rsdb netd:fd use;
+allow rsdb netd:fifo_file { read write };
+
+allow rsdb netd:netlink_kobject_uevent_socket { read write };
+allow rsdb netd:netlink_nflog_socket { read write };
+allow rsdb netd:netlink_route_socket { read write };
+allow rsdb netd:unix_stream_socket { read write connectto };
+allow rsdb netd:unix_dgram_socket { read write };
+allow rsdb netd:udp_socket { read write };
+
